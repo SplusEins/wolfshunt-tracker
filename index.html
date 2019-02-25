@@ -1,0 +1,26 @@
+<doctype html>
+  <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <h1 style="text-align: center">Wolfshunt Tracker</h1>
+    <div id="chart"></div>
+    <script type="text/javascript">
+      async function main() {
+        const data = await fetch('data.json').then((data) => data.json())
+        const tracesMap = new Map()
+        data.forEach(({ timestamp, team, rank }) => {
+          if (!tracesMap.has(team)) {
+            tracesMap.set(team, {x: [], y: [], name: team})
+          }
+          trace = tracesMap.get(team)
+          trace.x.push(timestamp)
+          trace.y.push(data.length - rank)
+        });
+        Plotly.newPlot('chart', [...tracesMap.values()], { }, { });
+      }
+
+      main().catch(console.error)
+    </script>
+  </body>
+</doctype>
