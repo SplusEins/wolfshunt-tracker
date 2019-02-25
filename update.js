@@ -9,10 +9,10 @@ const dbpath = 'data.json'
 
 async function main() {
   const data = JSON.parse(await readFile(dbpath))
-  const response = await axios.get('https://api.scavengerhunt-app.de/hunts/77/ranking')
+  const response = await axios.get('https://api.scavengerhunt-app.de/v2.0/hunts/77/ranking')
   const timestamp = new Date().toISOString()
-  const leaderboard = response.data.ranking.filter((team, index, teams) => teams.indexOf(team) == index)
-  leaderboard.forEach((team, rank) => data.push({ team, rank, timestamp }))
+  const leaderboard = response.data.ranking;
+  leaderboard.forEach(({ name, id, progress }) => data.push({ name, id, progress, timestamp }))
   await writeFile(dbpath, JSON.stringify(data))
 }
 

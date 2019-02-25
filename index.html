@@ -9,15 +9,23 @@
       async function main() {
         const data = await fetch('data.json').then((data) => data.json())
         const tracesMap = new Map()
-        data.forEach(({ timestamp, team, rank }) => {
-          if (!tracesMap.has(team)) {
-            tracesMap.set(team, {x: [], y: [], name: team})
+        data.forEach(({ name, id, progress, timestamp }) => {
+          if (progress == 0) {
+            return
           }
-          trace = tracesMap.get(team)
+          if (!tracesMap.has(id)) {
+            tracesMap.set(id, { x: [], y: [], name })
+          }
+          trace = tracesMap.get(id)
           trace.x.push(timestamp)
-          trace.y.push(data.length - rank)
+          trace.y.push(progress)
         });
-        Plotly.newPlot('chart', [...tracesMap.values()], { }, { });
+        Plotly.newPlot('chart', [...tracesMap.values()], {
+          yaxis: {
+            range: [0.0, 1.0],
+            tickformat: ',.0%',
+          },
+        }, { });
       }
 
       main().catch(console.error)
