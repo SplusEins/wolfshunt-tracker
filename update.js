@@ -13,7 +13,7 @@ async function main() {
   const timestamp = new Date().toISOString()
   const leaderboard = response.data.ranking;
   leaderboard.forEach(({ name, id, progress }) => data.push({ name, id, progress, timestamp }))
-  await writeFile(dbpath, JSON.stringify(data))
+  await writeFile(dbpath, JSON.stringify(data, null, 2))
 }
 
 main().catch(console.error)
