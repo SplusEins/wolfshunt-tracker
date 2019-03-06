@@ -10,7 +10,7 @@
         const data = await fetch('data.json').then((data) => data.json())
         const tracesMap = new Map()
         data.forEach(({ name, id, progress, timestamp }) => {
-          if (progress == 0) {
+          if (progress < 0.05) {
             return
           }
           if (!tracesMap.has(id)) {
