@@ -8,18 +8,26 @@
     <script type="text/javascript">
       async function main() {
         const data = await fetch('data.json').then((data) => data.json())
+
+        const currentProgress = new Map()
+        data.forEach(({ name, id, progress, timestamp }) => {
+          currentProgress.set(id, { name, progress })
+        })
+        const topTeams = [...currentProgress.keys()].slice(0, 10)
+
         const tracesMap = new Map()
         data.forEach(({ name, id, progress, timestamp }) => {
-          if (progress < 0.05) {
+          if (!topTeams.includes(id)) {
             return
           }
           if (!tracesMap.has(id)) {
             tracesMap.set(id, { x: [], y: [], name })
           }
-          trace = tracesMap.get(id)
+          const trace = tracesMap.get(id)
           trace.x.push(timestamp)
           trace.y.push(progress * 3012)
         });
+
         Plotly.newPlot('chart', [...tracesMap.values()], {
           yaxis: {
             range: [0, 3333],
