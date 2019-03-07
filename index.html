@@ -11,9 +11,14 @@
 
         const currentProgress = new Map()
         data.forEach(({ name, id, progress, timestamp }) => {
-          currentProgress.set(id, { name, progress })
+          if (currentProgress.get(id) == undefined || currentProgress.get(id) < progress) {
+            currentProgress.set(id, progress)
+          }
         })
-        const topTeams = [...currentProgress.keys()].slice(0, 10)
+        const topTeams = [...currentProgress.entries()]
+          .sort(([id1, progress1], [id2, progress2]) => progress2 - progress1)  
+          .map(([id, progress]) => id)
+          .slice(0, 10)
 
         const tracesMap = new Map()
         data.forEach(({ name, id, progress, timestamp }) => {
