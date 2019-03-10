@@ -30,7 +30,8 @@
           }
           const trace = tracesMap.get(id)
           trace.x.push(timestamp)
-          trace.y.push(progress * 3012)
+          const maxScore = new Date(timestamp) < new Date('2019-03-09T14:00:00.000Z') ? 3012 : 3062;
+          trace.y.push(progress * maxScore)
         });
 
         Plotly.newPlot('chart', [...tracesMap.values()], {
