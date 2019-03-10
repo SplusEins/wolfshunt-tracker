@@ -18,7 +18,7 @@
         const topTeams = [...currentProgress.entries()]
           .sort(([id1, progress1], [id2, progress2]) => progress2 - progress1)  
           .map(([id, progress]) => id)
-          .slice(0, 10)
+          .slice(0, 15)
 
         const tracesMap = new Map()
         data.forEach(({ name, id, progress, timestamp }) => {
